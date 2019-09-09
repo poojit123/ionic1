@@ -1,0 +1,30 @@
+<ion-header-bar>
+    <h1 class="title">Signup</h1>
+    <div class="buttons">
+        <button class="button button-clear" ng-click="closeLogin()">Close</button>
+    </div>
+</ion-header-bar>
+<ion-content>
+    <form ng-submit="doSignup()">
+        <div class="list">
+            <label class="item item-input item-floating-label">
+                <span class="input-label">Full Name</span>
+                <input type="text" ng-model="signupData.fullname" placeholder="Full Name">
+            </label>
+            <label class="item item-input item-floating-label">
+                <span class="input-label">Email</span>
+                <input type="text" ng-model="signupData.email" placeholder="Email">
+            </label>
+            <label class="item item-input item-floating-label">
+                <span class="input-label">Password</span>
+                <input type="password" ng-model="signupData.password" placeholder="Password">
+            </label>
+            <label class="item">
+                <button class="button button-block button-positive" type="submit">Signup</button>
+            </label>
+            <div class="row">
+                <div class="col">I have a already account <a href="#/signin"> Signin</a></div>
+            </div>
+        </div>
+    </form>
+</ion-content>

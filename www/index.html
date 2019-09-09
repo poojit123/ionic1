@@ -19,6 +19,28 @@
     <link href="lib/ionic/css/ionic.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/6.6.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.6.0/firebase-auth.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#config-web-app -->
+
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyDc1GQWblSo_HzxVQmNihdToNs2ZTVKdbg",
+        authDomain: "ionic1-fd811.firebaseapp.com",
+        databaseURL: "https://ionic1-fd811.firebaseio.com",
+        projectId: "ionic1-fd811",
+        storageBucket: "",
+        messagingSenderId: "735171376824",
+        appId: "1:735171376824:web:093f3620cf4132182f664d"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+    </script>
+
     <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
     <link href="css/ionic.app.css" rel="stylesheet">
     -->

@@ -1,0 +1,26 @@
+<ion-header-bar>
+    <h1 class="title">Signin</h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="closeLogin()">Close</button>
+    </div>
+  </ion-header-bar>
+  <ion-content>
+    <form ng-submit="doSignin()">
+        <div class="list">
+          <label class="item item-input item-floating-label">
+            <span class="input-label">Email</span>
+            <input type="text" ng-model="signinData.email" placeholder="Email">
+          </label>
+          <label class="item item-input item-floating-label">
+            <span class="input-label">Password</span>
+            <input type="password" ng-model="signinData.password" placeholder="Password">
+          </label>
+          <label class="item">
+              <button class="button button-block button-positive" type="submit">Signin</button>
+          </label>
+          <div class="row">
+              <div class="col">Don't have an account <a href="#/signup"> Signup</a></div>
+          </div>
+        </div>
+    </form>
+  </ion-content>

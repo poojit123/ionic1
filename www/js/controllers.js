@@ -1,4 +1,4 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers', ['ionic'])
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout) {
 
@@ -53,4 +53,106 @@ angular.module('starter.controllers', [])
 })
 
 .controller('PlaylistCtrl', function($scope, $stateParams) {
+})
+
+.controller('SigninCtrl', function($scope, $stateParams,$window,$ionicPopup, $timeout,$ionicLoading) {
+   
+   $scope.signinData = {};
+   $scope.signupData = {};
+
+  // An alert dialog
+  $scope.showAlert = function(message) {
+    var alertPopup = $ionicPopup.alert({
+      title: 'Error',
+      template: message
+    });
+  };
+
+  // loader
+  $scope.loaderShow = function() {
+    $ionicLoading.show({
+      template: 'Loading...',
+      duration: 3000
+    }).then(function(){
+       console.log("The loading indicator is now displayed");
+    });
+  };
+  $scope.loaderHide = function(){
+    $ionicLoading.hide().then(function(){
+       console.log("The loading indicator is now hidden");
+    });
+  };
+
+  // Perform the signin action when the user submits the signin form
+  $scope.doSignin = function() {
+    console.log('Doing login', $scope.signinData);
+
+    
+    if(typeof $scope.signinData.email=="undefined" || $scope.signinData.email==""){
+      $scope.showAlert('Please insert email');
+    }else if($scope.signinData.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/igm)== null){
+      $scope.showAlert('Please enter a vaild email');
+    }else if(typeof $scope.signinData.password=="undefined" || $scope.signinData.password==""){
+      $scope.showAlert('Please insert password');
+    }else{
+      $scope.loaderShow();
+
+      firebase.auth().signInWithEmailAndPassword($scope.signinData.email, $scope.signinData.password)
+      .then(function(result) {
+        $scope.loaderHide();
+        console.log(result);
+        $window.location = "/#/app/playlists";
+      })
+      .catch(function(error) {
+        $scope.loaderHide();
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        if(errorCode=='auth/user-not-found'){
+          $scope.showAlert('Email & Password not match');
+        }else{
+          $scope.showAlert(errorMessage);
+        }
+      });
+
+    }
+
+  };
+
+  // Perform the signup action when the user submits the signup form
+  $scope.doSignup = function() {
+
+
+    if(typeof $scope.signupData.fullname=="undefined" || $scope.signupData.fullname==""){
+      $scope.showAlert('Please insert fullname');
+    }else if(typeof $scope.signupData.email=="undefined" || $scope.signupData.email==""){
+      $scope.showAlert('Please insert email');
+    }else if($scope.signupData.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/igm)== null){
+      $scope.showAlert('Please enter a vaild email');
+    }else if(typeof $scope.signupData.password=="undefined" || $scope.signupData.password==""){
+      $scope.showAlert('Please insert password');
+    }else if($scope.signupData.password.length < 6){
+      $scope.showAlert('Password must be 6 char long');
+    }else{
+
+      $scope.loaderShow();
+
+      firebase.auth().createUserWithEmailAndPassword($scope.signupData.email, $scope.signupData.password)
+      .then(function(result) {
+        $scope.loaderHide();
+        console.log(result);
+        $window.location = "/#/signin";
+      })
+      .catch(function(error) {
+        $scope.loaderHide();
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        $scope.showAlert(errorMessage);
+      });
+
+    }
+
+  };
+
 });
