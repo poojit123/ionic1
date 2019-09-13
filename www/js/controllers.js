@@ -55,7 +55,7 @@ angular.module('starter.controllers', ['ionic'])
 .controller('PlaylistCtrl', function($scope, $stateParams) {
 })
 
-.controller('SigninCtrl', function($scope, $stateParams,$window,$ionicPopup, $timeout,$ionicLoading) {
+.controller('SigninCtrl', function($scope, $stateParams,$window,$state,$ionicPopup, $timeout,$ionicLoading) {
    
    $scope.signinData = {};
    $scope.signupData = {};
@@ -85,8 +85,6 @@ angular.module('starter.controllers', ['ionic'])
 
   // Perform the signin action when the user submits the signin form
   $scope.doSignin = function() {
-    console.log('Doing login', $scope.signinData);
-
     
     if(typeof $scope.signinData.email=="undefined" || $scope.signinData.email==""){
       $scope.showAlert('Please insert email');
@@ -100,8 +98,8 @@ angular.module('starter.controllers', ['ionic'])
       firebase.auth().signInWithEmailAndPassword($scope.signinData.email, $scope.signinData.password)
       .then(function(result) {
         $scope.loaderHide();
-        console.log(result);
-        $window.location = "/#/app/playlists";
+        $state.go('app.playlists');
+       // $window.location = "/#/app/playlists";
       })
       .catch(function(error) {
         $scope.loaderHide();
@@ -140,7 +138,7 @@ angular.module('starter.controllers', ['ionic'])
       firebase.auth().createUserWithEmailAndPassword($scope.signupData.email, $scope.signupData.password)
       .then(function(result) {
         $scope.loaderHide();
-        console.log(result);
+        $state.go('signin');
         $window.location = "/#/signin";
       })
       .catch(function(error) {
