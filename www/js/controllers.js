@@ -139,7 +139,6 @@ angular.module('starter.controllers', ['ionic'])
       .then(function(result) {
         $scope.loaderHide();
         $state.go('signin');
-        $window.location = "/#/signin";
       })
       .catch(function(error) {
         $scope.loaderHide();
