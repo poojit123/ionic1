@@ -1,9 +1,11 @@
-<ion-view view-title="Playlists">
+<ion-view view-title="Posts">
   <ion-content>
-    <ion-list>
-      <ion-item ng-repeat="playlist in playlists" href="#/app/playlists/{{playlist.id}}">
-        {{playlist.title}}
-      </ion-item>
-    </ion-list>
+      <div class="list">
+          <a class="item item-thumbnail-left" ng-repeat="playlist in playlists" href="#/app/playlists/{{playlist.id}}">
+            <img src="https://via.placeholder.com/150">
+            <h2>{{playlist.title}}</h2>
+            <p>{{playlist.writer}}</p>
+          </a>
+      </div>
   </ion-content>
 </ion-view>

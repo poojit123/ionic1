@@ -43,12 +43,12 @@ angular.module('starter.controllers', ['ionic'])
 
 .controller('PlaylistsCtrl', function($scope) {
   $scope.playlists = [
-    { title: 'Reggae', id: 1 },
-    { title: 'Chill', id: 2 },
-    { title: 'Dubstep', id: 3 },
-    { title: 'Indie', id: 4 },
-    { title: 'Rap', id: 5 },
-    { title: 'Cowbell', id: 6 }
+    { title: 'Reggae',writer:'Jitu', id: 1 },
+    { title: 'Chill',writer:'Rahul', id: 2 },
+    { title: 'Dubstep',writer:'Jitu', id: 3 },
+    { title: 'Indie',writer:'Mohan', id: 4 },
+    { title: 'Rap',writer:'Rani', id: 5 },
+    { title: 'Cowbell',writer:'Harsh', id: 6 }
   ];
 })
 
