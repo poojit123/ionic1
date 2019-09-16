@@ -19,6 +19,10 @@
                 <span class="input-label">Password</span>
                 <input type="password" ng-model="signupData.password" placeholder="Password">
             </label>
+            <label class="item item-input item-floating-label">
+                <span class="input-label">Profile</span>
+                <input type="file" ng-model="signupData.profile" onchange="angular.element(this).scope().uploadPhoto(this.files)" accept="image/*">
+            </label>
             <label class="item">
                 <button class="button button-block button-positive" type="submit">Signup</button>
             </label>

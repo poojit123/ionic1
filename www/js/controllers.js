@@ -1,6 +1,6 @@
 angular.module('starter.controllers', ['ionic'])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+.controller('AppCtrl', function($scope,$state, $ionicModal, $timeout) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -8,37 +8,25 @@ angular.module('starter.controllers', ['ionic'])
   // listen for the $ionicView.enter event:
   //$scope.$on('$ionicView.enter', function(e) {
   //});
+  const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  if(currentUser==null || currentUser.userId==''){
+    $state.go('signin');
+  }
 
-  // Form data for the login modal
-  $scope.loginData = {};
+  $scope.userData = {};
+  $scope.userData = JSON.parse(localStorage.getItem("currentUser"));
 
-  // Create the login modal that we will use later
-  $ionicModal.fromTemplateUrl('templates/login.html', {
+  $scope.logout =function(){
+    localStorage.clear();
+    $state.go('signin');
+  }
+
+  $ionicModal.fromTemplateUrl('templates/createNews.html', {
     scope: $scope
   }).then(function(modal) {
     $scope.modal = modal;
   });
 
-  // Triggered in the login modal to close it
-  $scope.closeLogin = function() {
-    $scope.modal.hide();
-  };
-
-  // Open the login modal
-  $scope.login = function() {
-    $scope.modal.show();
-  };
-
-  // Perform the login action when the user submits the login form
-  $scope.doLogin = function() {
-    console.log('Doing login', $scope.loginData);
-
-    // Simulate a login delay. Remove this and replace with your login
-    // code if using a login system
-    $timeout(function() {
-      $scope.closeLogin();
-    }, 1000);
-  };
 })
 
 .controller('PlaylistsCtrl', function($scope) {
@@ -57,8 +45,14 @@ angular.module('starter.controllers', ['ionic'])
 
 .controller('SigninCtrl', function($scope, $stateParams,$window,$state,$ionicPopup, $timeout,$ionicLoading) {
    
+  const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  if(currentUser!=null && currentUser.userId!=''){
+    $state.go('app.playlists');
+  }
+
    $scope.signinData = {};
    $scope.signupData = {};
+   $scope.profilePic = "";
 
   // An alert dialog
   $scope.showAlert = function(message) {
@@ -72,7 +66,6 @@ angular.module('starter.controllers', ['ionic'])
   $scope.loaderShow = function() {
     $ionicLoading.show({
       template: 'Loading...',
-      duration: 3000
     }).then(function(){
        console.log("The loading indicator is now displayed");
     });
@@ -82,6 +75,10 @@ angular.module('starter.controllers', ['ionic'])
        console.log("The loading indicator is now hidden");
     });
   };
+
+  $scope.uploadPhoto = function(files){
+    $scope.profilePic = files[0];
+  }
 
   // Perform the signin action when the user submits the signin form
   $scope.doSignin = function() {
@@ -97,9 +94,21 @@ angular.module('starter.controllers', ['ionic'])
 
       firebase.auth().signInWithEmailAndPassword($scope.signinData.email, $scope.signinData.password)
       .then(function(result) {
-        $scope.loaderHide();
-        $state.go('app.playlists');
-       // $window.location = "/#/app/playlists";
+
+        firebase.database().ref("users").child(result.user.uid).once('value', function(snapshot) {
+            if(snapshot.val()){
+                let userData = snapshot.val();
+                userData = {
+                  userId: userData.userId,
+                  profilePic: userData.profilePic,
+                  name: userData.name,
+                }
+                localStorage.setItem("currentUser",JSON.stringify(userData));
+                $scope.loaderHide();
+                $state.go('app.playlists');
+            }
+        });
+        
       })
       .catch(function(error) {
         $scope.loaderHide();
@@ -131,14 +140,58 @@ angular.module('starter.controllers', ['ionic'])
       $scope.showAlert('Please insert password');
     }else if($scope.signupData.password.length < 6){
       $scope.showAlert('Password must be 6 char long');
+    }else if($scope.profilePic == ""){
+      $scope.showAlert('Please upload profile picture');
     }else{
 
       $scope.loaderShow();
 
       firebase.auth().createUserWithEmailAndPassword($scope.signupData.email, $scope.signupData.password)
       .then(function(result) {
-        $scope.loaderHide();
-        $state.go('signin');
+
+        $scope.profilePic
+        var storageRef = firebase.storage().ref();
+        var uploadTask = storageRef.child('user_profile/' + Date.now()).put($scope.profilePic);
+
+        uploadTask.on('state_changed', function(snapshot) {
+
+            var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+
+            console.log('Upload is ' + progress + '% done');
+
+            switch (snapshot.state) {
+
+                case firebase.storage.TaskState.PAUSED:
+
+                    console.log('Upload is paused');
+                    break;
+
+                case firebase.storage.TaskState.RUNNING:
+
+                    console.log('Upload is running');
+                    break;
+            }
+
+        }, function(error) {
+
+            alert(error)
+
+        }, function() {
+
+            uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+              let userData = {
+                userId:result.user.uid,
+                name:$scope.signupData.fullname,
+                profilePic:downloadURL,
+              }
+              
+              firebase.database().ref().child('users').child(result.user.uid).set(userData);
+
+              $scope.loaderHide();
+              $state.go('signin');
+            });
+        });  
+
       })
       .catch(function(error) {
         $scope.loaderHide();

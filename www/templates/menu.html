@@ -16,8 +16,8 @@
   
     <ion-content>
       <div class="item-avatar bg-black">
-          <img src="../img/jitu.jpg">
-          <p>Jitendra Patidar</p>
+          <img src="{{userData.profilePic}}">
+          <p>{{userData.name}}</p>
       </div>
       <div class="list">
 
@@ -31,7 +31,7 @@
             Contacts
           </a>
 
-          <a class="item item-icon-left" href="#/signin">
+          <a class="item item-icon-left" ng-click="logout()">
             <i class="icon ion-log-out"></i>
             Logout
           </a>

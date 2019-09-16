@@ -1,14 +1,20 @@
 /* Empty. Add your own CSS if you like */
-.bg-black{
+.bg-black {
+    position: relative;
     background-color: #000000;
     color: #fff;
-    display: inline-flex;
     width: 100%;
     align-items: center;
+    height: 115px;
 }
-.bg-black > img:first-child{
+.bg-black > img:first-child {
     top: 10px;
     left: 15px;
-    max-width: 50px;
-    max-height: 50px;
+    max-width: 70px;
+    max-height: 70px;
+}
+.bg-black > p {
+    position: absolute;
+    bottom: 0;
+    left: 10px;
 }
