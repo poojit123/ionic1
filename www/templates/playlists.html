@@ -5,10 +5,11 @@
 
   <ion-content>
       <div class="list">
-          <a class="item item-thumbnail-left" ng-repeat="playlist in playlists" href="#/app/playlists/{{playlist.id}}">
-            <img src="https://via.placeholder.com/150">
+          <a class="item item-thumbnail-left" ng-repeat="playlist in playlists" href="#/app/playlists/{{playlist.$id}}">
+            <!-- <img src="https://via.placeholder.com/150"> -->
+            <img src="{{playlist.postPic}}">
             <h2>{{playlist.title}}</h2>
-            <p>{{playlist.writer}}</p>
+            <p>{{playlist.description}}</p>
           </a>
       </div>
   </ion-content>

@@ -1,5 +1,26 @@
-<ion-view view-title="Playlist">
+<ion-view view-title="Post Details">
   <ion-content>
-    <h1>Playlist</h1>
+
+    <div class="list card">
+
+      <div class="item item-avatar">
+        <img src="{{userData.profilePic}}">
+        <h2>{{userData.name}}</h2>
+        <p>{{postData.timestamp | date:'MMMM dd, yyyy'}}</p>
+      </div>
+
+      <div class="item item-body">
+        <img class="full-image" src="{{postData.postPic}}">
+        <p>
+            {{postData.description}}
+        </p>
+        <p>
+          <a href="#" class="subdued">1 Like</a>
+          <a href="#" class="subdued">5 Comments</a>
+        </p>
+      </div>
+
+    </div>
+
   </ion-content>
 </ion-view>

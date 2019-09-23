@@ -6,22 +6,22 @@
         </div>
     </ion-header-bar>
     <ion-content>
-        <form ng-submit="doLogin()">
+        <form ng-submit="doPost()">
 
-        <div class="list list-inset">
-            <label class="item item-input">
-                <input type="text" placeholder="Post title" ng-model="postData.title">
+            <div class="list list-inset">
+                <label class="item item-input">
+                    <input type="text" placeholder="Post title" ng-model="postData.title">
+                </label>
+                <label class="item item-input">
+                    <textarea placeholder="Post description" ng-model="postData.description"  cols="30" rows="10"></textarea>
+                </label>
+                <label class="item item-input">
+                    <input type="file" accept="image/*" ng-model="postData.image" onchange="angular.element(this).scope().uploadPhoto(this.files)">
+                </label>
+            </div>
+            <label class="item">
+                <button class="button button-block button-positive" type="submit">Create</button>
             </label>
-            <label class="item item-input">
-                <textarea placeholder="Post description" ng-model="postData.description"  cols="30" rows="10"></textarea>
-            </label>
-            <label class="item item-input">
-                <input type="file" accept="image/*" ng-model="postData.image">
-            </label>
-        </div>
-        <label class="item">
-            <button class="button button-block button-positive" type="submit">Create</button>
-        </label>
 
         </form>
     </ion-content>
